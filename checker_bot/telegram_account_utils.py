@@ -47,6 +47,14 @@ def add_user(phone, bot_api):
     client.start(phone=phone, force_sms=True,
                  first_name=first_name[random.randint(0, len(first_name) - 1)],
                  last_name=last_name[random.randint(0, len(last_name) - 1)])
+
+    # in prod add password
+    # try:
+    #     client.edit_2fa(new_password='qweewq123qa')
+    #     print("2fa password: qweewq123qa")
+    # except Exception:
+    #     print("Can not add new password")
+
     # 25 sleep time
     Sessions.objects.create(name=phone, bot_api_id=bot_api.id,
                             last_parsing=(timezone.now()) + timedelta(minutes=25),
