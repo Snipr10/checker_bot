@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from core.views import add_session
+from core.views import add_session, test_bot
 
 urlpatterns = [
     path('add_session', add_session),
+    path('test_bot', test_bot),
+
 ]

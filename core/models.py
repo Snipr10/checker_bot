@@ -25,3 +25,14 @@ class Sessions(models.Model):
         return str(self.name)
 
 
+class Bot(models.Model):
+    username = models.CharField(max_length=256)
+    last_check = models.DateTimeField(null=True, blank=True)
+    all_warnings = models.IntegerField(default=0)
+    # if bot active warnings = 0
+    warnings = models.IntegerField(default=0)
+    is_founded = models.BooleanField(default=True)
+    is_being_checked = models.BooleanField(default=False)
+
+    def __str__(self):
+        return str(self.username)
