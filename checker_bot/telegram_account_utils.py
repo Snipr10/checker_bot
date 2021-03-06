@@ -164,7 +164,10 @@ def disconnect_success(bot, session):
     bot.is_being_checked = False
     bot.warnings = 0
     bot.last_check = timezone.localtime()
-    bot.save(update_fields=['is_being_checked', 'warnings', 'last_check'])
+    if not bot.ready_to_use:
+        print("send message to user")
+    bot.ready_to_use = True
+    bot.save(update_fields=['is_being_checked', 'warnings', 'last_check', 'ready_to_use'])
     session.is_parsing = False
     session.last_parsing = timezone.localtime()
     session.save(update_fields=['is_parsing', 'last_parsing'])
@@ -173,9 +176,13 @@ def disconnect_success(bot, session):
 def disconnect_bad(bot, session):
     bot.all_warnings += 1
     bot.warnings += 1
+    if not bot.ready_to_use and (bot.warnings == 0 or bot.warnings == 11):
+        print("send message to user")
     bot.is_being_checked = False
     bot.last_check = timezone.localtime()
-    bot.save(update_fields=['is_being_checked', 'warnings', 'all_warnings', 'last_check'])
+    if bot.warnings >= 10:
+        bot.is_active = False
+    bot.save(update_fields=['is_active', 'is_being_checked', 'warnings', 'all_warnings', 'last_check'])
     session.is_parsing = False
     session.last_parsing = timezone.localtime()
     session.save(update_fields=['is_parsing', 'last_parsing'])

@@ -22,6 +22,7 @@ from telethon.tl.functions.account import UpdateProfileRequest
 from telethon.tl.functions.contacts import ResolveUsernameRequest
 
 from checker_bot.bot import get_bot
+from checker_bot.tasks import add_client
 from checker_bot.telegram_account_utils import add_user, get_session, get_client, get_chat, disconnect, \
     disconnect_success, disconnect_bad
 from core.models import Sessions, BotApi
@@ -61,3 +62,9 @@ def test_bot(request):
         disconnect_bad(bot, session)
         return Response({'success': 'Not Ok'}, status=status.HTTP_200_OK)
 
+
+@csrf_exempt
+@api_view(["GET"])
+@permission_classes((AllowAny,))
+def add_client1(request):
+    add_client()
