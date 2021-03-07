@@ -9,6 +9,7 @@ from checker_bot.celery.celery import app
 from checker_bot.bot import get_bot
 from checker_bot.settings import MIN_USER_COUNT, MIN_USER_DAY
 from checker_bot.telegram_account_utils import get_client, get_chat, disconnect_success, disconnect_bad
+from core.elastic.elastic import add_to_elastic_bot_data
 from core.models import Sessions, BotApi
 from django.utils import timezone
 

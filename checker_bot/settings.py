@@ -146,7 +146,7 @@ CELERY_ACCEPT_CONTENT = ['application/json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
 
-SUPPORT_USER_URL = 'http://127.0.0.1:8888/reply'
+SUPPORT_USER_URL = 'http://127.0.0.1:8731/message'
 
 country_codes = [0, 0, 0, 135, 0, 2, 0, 11, 0, 115, 0, 6, 0]
 MIN_USER_DAY = 3
