@@ -22,6 +22,9 @@ from telethon.tl.functions.contacts import ResolveUsernameRequest
 from telethon import TelegramClient, events, sync
 from telethon.errors import FloodWaitError, AuthKeyUnregisteredError, UsernameInvalidError
 from telethon.tl.functions.channels import GetFullChannelRequest
+
+from checker_bot.send_message import send_message
+from core.elastic.elastic import add_to_elastic_bot_data, delete_from_elastic
 from core.models import Sessions, BotApi
 
 
@@ -165,8 +168,15 @@ def disconnect_success(bot, session):
     bot.warnings = 0
     bot.last_check = timezone.localtime()
     if not bot.ready_to_use:
-        print("send message to user")
-    bot.ready_to_use = True
+        try:
+            add_to_elastic_bot_data(bot)
+            bot.ready_to_use = True
+        except Exception as e:
+            print(e)
+        try:
+            send_message(bot.user, "Ваш бот добавлен " + str(bot.username))
+        except Exception as e:
+            print(e)
     bot.save(update_fields=['is_being_checked', 'warnings', 'last_check', 'ready_to_use'])
     session.is_parsing = False
     session.last_parsing = timezone.localtime()
@@ -177,11 +187,19 @@ def disconnect_bad(bot, session):
     bot.all_warnings += 1
     bot.warnings += 1
     if not bot.ready_to_use and (bot.warnings == 0 or bot.warnings == 11):
-        print("send message to user")
+        try:
+            send_message(bot.user, "Ваш бот не отвечает " + str(bot.username))
+        except Exception as e:
+            print(e)
     bot.is_being_checked = False
     bot.last_check = timezone.localtime()
     if bot.warnings >= 10:
-        bot.is_active = False
+        try:
+            delete_from_elastic(bot.id)
+            bot.is_active = False
+        except Exception as e:
+            print(e)
+            print("can not delete from elastic")
     bot.save(update_fields=['is_active', 'is_being_checked', 'warnings', 'all_warnings', 'last_check'])
     session.is_parsing = False
     session.last_parsing = timezone.localtime()
