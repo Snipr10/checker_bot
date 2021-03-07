@@ -16,11 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
-from core.views import add_session, test_bot, add_client1
+from core.views import add_session, test_bot, add_client1, trigger_error
 
 urlpatterns = [
     path('add_session', add_session),
     path('test_bot', test_bot),
     path('add_client', add_client1),
+    path('sentry-debug/', trigger_error)
 
 ]

@@ -68,3 +68,10 @@ def test_bot(request):
 @permission_classes((AllowAny,))
 def add_client1(request):
     add_client()
+
+
+@csrf_exempt
+@api_view(["GET"])
+@permission_classes((AllowAny,))
+def trigger_error(request):
+    division_by_zero = 1 / 0
