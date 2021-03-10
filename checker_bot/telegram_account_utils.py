@@ -209,7 +209,7 @@ def disconnect_bad(bot, session):
 # TODO refactoring
 def get_chat(bot, session, client):
     try:
-        tg_chat = client.get_entity(bot.username)
+        tg_chat = client.get_entity(bot.username.replace('@', ''))
     except ValueError as e:
         status_bot_founded(bot)
         print(str(e) + str(bot.id) + 'deactive')
